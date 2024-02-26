@@ -13,4 +13,6 @@ router.patch(
   authController.updatePassword
 );
 
+router.post("/updateName", authController.protect, authController.updateName);
+
 module.exports = router;

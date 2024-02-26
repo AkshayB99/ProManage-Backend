@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 
 const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRouter");
+const cardRouter = require("./routes/cardRouter");
 
 const app = express();
 
@@ -19,8 +20,11 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-// Router
+// Router for user
 app.use("/api/v1/user", userRouter);
+
+// Router for card
+app.use("/api/v1/card", cardRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

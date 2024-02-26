@@ -132,3 +132,26 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
+
+exports.updateName = catchAsync(async (req, res, next) => {
+  if (!req.body.name) {
+    return next(new AppError("Please provide a name.", 400));
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    { $set: { name: req.body.name } }, // This part is missing in your code
+    {
+      new: true, // Return the modified document rather than the original.
+      runValidators: true, // Ensures validations defined in the schema are run.
+      context: "query", // Necessary for certain types of custom validation to work correctly.
+    }
+  );
+
+  if (!updatedUser) {
+    return next(new AppError("User not found.", 404));
+  }
+
+  // 3) Log user in, send JWT
+  createSendToken(updatedUser, 200, res);
+});
