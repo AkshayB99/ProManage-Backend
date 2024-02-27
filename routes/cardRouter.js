@@ -21,4 +21,6 @@ router
   .route("/:collectionId/:checklistItemId")
   .patch(authController.protect, cardController.updateCheckbox);
 
+router.get("/share/:id", cardController.getOne);
+
 module.exports = router;
