@@ -33,7 +33,6 @@ exports.getUserData = catchAsync(async (req, res, next) => {
 exports.getOne = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   try {
-    // Find the collection with the given collectionId
     const collection = await Card.findById(id);
 
     if (!collection) {
@@ -57,14 +56,12 @@ exports.updateCheckbox = catchAsync(async (req, res, next) => {
   const { checked } = req.body;
 
   try {
-    // Find the collection with the given collectionId
     const collection = await Card.findById(collectionId);
 
     if (!collection) {
       return res.status(404).json({ error: "Collection not found" });
     }
 
-    // Find the checklist item within the collection with the given checklistItemId
     const checklistItem = collection.checklist.find(
       (item) => item._id.toString() === checklistItemId
     );
@@ -73,10 +70,8 @@ exports.updateCheckbox = catchAsync(async (req, res, next) => {
       return res.status(404).json({ error: "Checklist item not found" });
     }
 
-    // Update the checked property of the checklist item
     checklistItem.checked = checked;
 
-    // Save the updated collection
     await collection.save();
 
     res.status(200).json({
@@ -131,26 +126,25 @@ exports.getPeriod = catchAsync(async (req, res, next) => {
   const { period } = req.query;
   let startDate, endDate;
 
-  // Determine start and end dates based on the requested period
   switch (period) {
     case 'today':
       startDate = new Date();
-      startDate.setHours(0, 0, 0, 0); // Start of the day
+      startDate.setHours(0, 0, 0, 0); 
       endDate = new Date();
-      endDate.setHours(23, 59, 59, 999); // End of the day
+      endDate.setHours(23, 59, 59, 999); 
       break;
     case 'this_week':
       startDate = new Date();
-      startDate.setHours(0, 0, 0, 0); // Start of the day
+      startDate.setHours(0, 0, 0, 0); 
       endDate = new Date(startDate);
-      endDate.setDate(endDate.getDate() + 6 - startDate.getDay()); // End of the week
+      endDate.setDate(endDate.getDate() + 6 - startDate.getDay()); 
       endDate.setHours(23, 59, 59, 999);
       break;
     case 'this_month':
       startDate = new Date();
-      startDate.setHours(0, 0, 0, 0); // Start of the day
+      startDate.setHours(0, 0, 0, 0); 
       endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-      endDate.setHours(23, 59, 59, 999); // End of the month
+      endDate.setHours(23, 59, 59, 999); 
       break;
     default:
       return res.status(400).json({ error: 'Invalid period' });

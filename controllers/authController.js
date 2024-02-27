@@ -23,7 +23,7 @@ const createSendToken = (user, statusCode, res) => {
 
   res.cookie("jwt", token, cookieOptions);
 
-  // Remove password from output
+  // Remove password from response
   user.password = undefined;
 
   res.status(statusCode).json({
@@ -127,7 +127,6 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
-  // User.findByIdAndUpdate will NOT work as intended!
 
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
@@ -140,11 +139,11 @@ exports.updateName = catchAsync(async (req, res, next) => {
 
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,
-    { $set: { name: req.body.name } }, // This part is missing in your code
+    { $set: { name: req.body.name } }, 
     {
-      new: true, // Return the modified document rather than the original.
-      runValidators: true, // Ensures validations defined in the schema are run.
-      context: "query", // Necessary for certain types of custom validation to work correctly.
+      new: true, 
+      runValidators: true, 
+      context: "query",
     }
   );
 
