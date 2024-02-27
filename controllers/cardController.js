@@ -31,29 +31,19 @@ exports.getUserData = catchAsync(async (req, res, next) => {
 });
 
 exports.getOne = catchAsync(async (req, res, next) => {
-  const { collectionId, checklistItemId } = req.params;
-
+  const id = req.params.id;
   try {
     // Find the collection with the given collectionId
-    const collection = await Card.findById({ _id: collectionId });
+    const collection = await Card.findById(id);
 
     if (!collection) {
       return res.status(404).json({ error: "Collection not found" });
     }
 
-    // Find the checklist item within the collection with the given checklistItemId
-    const checklistItem = collection.checklist.find(
-      (item) => item._id.toString() === checklistItemId
-    );
-
-    if (!checklistItem) {
-      return res.status(404).json({ error: "Checklist item not found" });
-    }
-
     res.status(200).json({
       status: "success",
       data: {
-        checklistItem,
+        collection,
       },
     });
   } catch (error) {
