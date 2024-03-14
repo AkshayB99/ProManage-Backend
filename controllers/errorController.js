@@ -6,11 +6,21 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateFieldsDB = (err) => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+  // Extract the duplicate field value from the keyValue property
+  const value = err?.keyValue?.email;
 
-  const message = `Duplicate field value: ${value}. Please use another value!`;
-  return new AppError(message, 400);
+  // Check if value is defined
+  if (value) {
+    const message = `You are already Signed up, just login or use any other email`;
+    // Return the error as an AppError object
+    return message
+  }
+
+  // If value is not defined, return the error as is
+  return err;
 };
+
+
 
 const handleValidationErrorDB = (err) => {
   const additionalErrors = [];
