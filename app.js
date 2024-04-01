@@ -11,9 +11,10 @@ const cardRouter = require("./routes/cardRouter");
 const app = express();
 
 const corsOptions = {
-  origin: '*',
+  origin: 'https://pro-manage-aib99.netlify.app',
 };
 
+// Apply CORS middleware with options
 app.use(cors(corsOptions));
 
 app.use(cookieParser());
