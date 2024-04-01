@@ -10,7 +10,7 @@ const cardRouter = require("./routes/cardRouter");
 
 const app = express();
 
-app.use(cors());
+app.use(cors(process.env.ORIGIN));
 
 app.use(cookieParser());
 app.use(express.json());
