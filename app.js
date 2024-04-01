@@ -11,7 +11,7 @@ const cardRouter = require("./routes/cardRouter");
 const app = express();
 
 const corsOptions = {
-  origin: process.env.ORIGIN, 
+  origin: '*',
 };
 
 app.use(cors(corsOptions));
